@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Errore 404 - Pagina non trovata</title>
+    <th:block th:replace="~{fragments/utils :: style}" />
+</head>
+<body class="bg-light min-vh-100 d-flex flex-column">
+    <header>
+        <th:block th:replace="~{fragments/utils :: navbar}" />
+    </header>
+
+    <main class="flex-fill d-flex align-items-center justify-content-center">
+        <div class="card shadow-sm border-0 p-4" style="max-width: 400px; width:100%;">
+            <div class="mb-2" style="font-size: 2.5rem;">🔍</div>
+            <div class="fw-bold text-danger" style="font-size: 3.5rem;">404</div>
+            <h2 class="mt-3 mb-2">Pagina non trovata</h2>
+            <p class="text-muted mb-4">
+                La pagina che cerchi non esiste oppure è stata rimossa.<br>
+                Controlla l'indirizzo o torna indietro.
+            </p>
+            <a th:href="@{/}" class="btn btn-primary">
+                <i class="bi bi-house-door"></i> Torna alla Home
+            </a>
+        </div>
+    </main>
+    <th:block th:replace="fragments/utils :: js"/>
+
+</body>
+</html>

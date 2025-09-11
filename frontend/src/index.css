@@ -1,0 +1,207 @@
+@import "keen-slider/keen-slider.min.css";
+@import "tailwindcss";
+
+@keyframes floaty {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-16px);
+  }
+}
+
+.floaty {
+  animation: floaty 3.5s ease-in-out infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 18s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Contenitore principale */
+.react-datepicker {
+  border-radius: 1.25rem !important;
+  border: none !important;
+  box-shadow: 0 4px 24px rgba(40, 40, 70, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  font-family: 'Inter', 'Montserrat', 'Poppins', sans-serif;
+  background: #fff !important;
+}
+
+/* Header semplice, solo bianco */
+.react-datepicker__header {
+  background: #fff !important;
+  border-top-left-radius: 1.25rem !important;
+  border-top-right-radius: 1.25rem !important;
+  border-bottom: none !important;
+  color: #232323 !important;
+  box-shadow: none !important;
+}
+
+/* Giorni normali */
+.react-datepicker__day {
+  border-radius: 999px !important;
+  font-weight: 600;
+  color: #232323 !important;
+  transition: background 0.15s;
+}
+
+/* Giorno selezionato - solo qui l'arancione! */
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background: #FFB626 !important;
+  color: #fff !important;
+}
+
+/* Hover su giorni */
+.react-datepicker__day:hover {
+  background: #f1f1f1 !important;
+  color: #232323 !important;
+}
+
+/* Oggi con solo bordo arancio sottile */
+.react-datepicker__day--today {
+  border: 1px solid #FFB626 !important;
+  color: #232323 !important;
+}
+
+/* Giorni disabilitati */
+.react-datepicker__day--disabled {
+  color: #d0d0d0 !important;
+  background: transparent !important;
+  cursor: not-allowed !important;
+}
+
+/* Mese/anno */
+.react-datepicker__current-month {
+  font-weight: 700;
+  color: #232323 !important;
+  font-size: 1rem !important;
+  margin-bottom: 0.5em;
+}
+
+/* Frecce di navigazione */
+.react-datepicker__navigation {
+  top: 18px !important;
+}
+
+.react-datepicker__navigation-icon::before {
+  border-color: #232323 !important;
+}
+
+/* Weekdays (lun, mar, ...) */
+.react-datepicker__day-names {
+  margin-bottom: 0.25rem;
+}
+
+.react-datepicker__day-name {
+  color: #aaa !important;
+  font-weight: 500;
+}
+
+/* Popover larghezza custom */
+.datepicker-calendar-wide {
+  min-width: 100%;
+  width: 100% !important;
+  max-width: none !important;
+}
+
+
+/* Nasconde la scrollbar su Chrome, Safari, Edge */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Nasconde la scrollbar su Firefox */
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.airbnb-datepicker.react-datepicker {
+  width: 100%;
+  max-width: none;
+  border-radius: 2rem;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+  border: 1px solid #f3f4f6;
+  background: #fff;
+  padding: 1.2rem 2rem;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+.airbnb-datepicker .react-datepicker__month-container {
+  width: 100%;
+}
+.airbnb-datepicker .react-datepicker__header {
+  background: #fff7ed;
+  border-bottom: 1px solid #fee2b9;
+  border-radius: 2rem 2rem 0 0;
+  padding-top: 1.1rem;
+}
+.airbnb-datepicker .react-datepicker__current-month {
+  color: #fb923c;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+}
+.airbnb-datepicker .react-datepicker__day-names {
+  margin-bottom: 0.2rem;
+}
+.airbnb-datepicker .react-datepicker__day,
+.airbnb-datepicker .react-datepicker__day-name {
+  width: 2.4rem;
+  height: 2.4rem;
+  line-height: 2.4rem;
+  margin: 0.13rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #222;
+  border-radius: 999px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.airbnb-datepicker .react-datepicker__day--selected,
+.airbnb-datepicker .react-datepicker__day--keyboard-selected {
+  background: linear-gradient(90deg,#fb923c,#ea580c);
+  color: #fff !important;
+  font-weight: 700;
+}
+
+.airbnb-datepicker .react-datepicker__day--in-range,
+.airbnb-datepicker .react-datepicker__day--in-selecting-range {
+  background: #ffe4c2;
+  color: #ea580c;
+}
+
+.airbnb-datepicker .react-datepicker__day--today {
+  border-bottom: 2px solid #fb923c;
+  color: #fb923c;
+  font-weight: 700;
+}
+.airbnb-datepicker .react-datepicker__day:hover {
+  background: #fff7ed;
+  color: #fb923c;
+}
+.airbnb-datepicker .react-datepicker__navigation {
+  top: 18px;
+}
+.airbnb-datepicker .react-datepicker__navigation-icon {
+  font-size: 2rem;
+  color: #fb923c;
+}

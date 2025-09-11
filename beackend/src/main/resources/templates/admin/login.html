@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="it" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login | RestFinder</title>
+    <th:block th:replace="~{fragments/utils :: style}" />
+</head>
+<body class="bg-dark">
+  <!-- Navbar minimal su login -->
+  <nav class="navbar navbar-dark bg-primary shadow-sm">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" href="#">
+        <i class="bi bi-geo-alt-fill fs-4 text-warning"></i> RestFinder
+      </a>
+    </div>
+  </nav>
+  <div class="d-flex justify-content-center align-items-center" style="min-height:90vh;">
+    <div class="card p-4 shadow-lg" style="min-width:350px;max-width:360px;">
+      <div class="text-center mb-4">
+        <i class="bi bi-person-circle fs-1 text-primary mb-2"></i>
+        <h4 class="fw-bold">Login Admin</h4>
+      </div>
+      <form th:action="@{/login}" method="post" autocomplete="off">
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <input class="form-control" type="text" name="username" autofocus required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input class="form-control" type="password" name="password" required>
+        </div>
+        <div th:if="${param.error}" class="alert alert-danger text-center p-2">Username o password errati.</div>
+        <button class="btn btn-primary w-100 fw-semibold" type="submit">Accedi</button>
+      </form>
+      
+    </div>
+  </div>
+ <th:block th:replace="fragments/utils :: js"/>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${edit} ? 'Modifica Faq' : 'Crea Faq'">Faq</title>
+    <th:block th:replace="~{fragments/utils :: style}" />
+    <style>
+        @media (max-width: 767.98px) {
+            .card { margin-top: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <th:block th:replace="~{fragments/utils :: navbar}" />
+    </header>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-7 col-xl-6">
+                <div class="card shadow-lg border-primary">
+                    <div class="card-header bg-primary text-white fw-bold fs-5">
+                        <i class="bi bi-tags"></i>
+                        <span th:text="${edit} ? 'Modifica Faq' : 'Crea Faq'">Faq</span>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="${edit} ? @{'/admin/faqs/edit/' + ${faq.id}} : @{'/admin/faqs/create'}"
+                              th:object="${faq}" method="post" autocomplete="off">
+                            <div class="mb-3">
+                                <label for="question" class="form-label">Domanda Faq</label>
+                                <input type="text" id="question" th:field="*{question}" class="form-control" maxlength="255" autofocus>
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('question')}" th:errors="*{question}"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="itQuestion" class="form-label">Domanda in italiano Faq</label>
+                                <input type="text" id="itQuestion" th:field="*{itQuestion}" class="form-control" maxlength="255" autofocus>
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('itQuestion')}" th:errors="*{itQuestion}"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="response" class="form-label">Risposta Faq</label>
+                                <textarea id="response" th:field="*{response}" class="form-control" rows="5"></textarea>
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('response')}" th:errors="*{response}"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="itResponse" class="form-label">Risposta in italiano Faq</label>
+                                <textarea id="itResponse" th:field="*{itResponse}" class="form-control" rows="5"></textarea>
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('itResponse')}" th:errors="*{itResponse}"></div>
+                            </div>
+                            <div class="mt-4 d-flex flex-column flex-sm-row gap-2">
+                                <button type="submit" th:classappend="${edit} ? 'btn-warning' : 'btn-success'" class="btn px-4 fw-semibold">
+                                    <i th:classappend="${edit} ? 'bi-pencil' : 'bi-save'" class="bi"></i>
+                                    <span th:text="${edit} ? 'Aggiorna Faq' : 'Crea Faq'">Salva Dati</span>
+                                </button>
+                                <a th:href="@{/admin/faqs}" class="btn btn-secondary px-4 fw-semibold">
+                                    <i class="bi bi-x-circle"></i> Annulla
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   <th:block th:replace="fragments/utils :: js"/>
+</body>
+</html>

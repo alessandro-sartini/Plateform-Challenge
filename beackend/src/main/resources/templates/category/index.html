@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categorie Ristoranti | RestFinder</title>
+    <th:block th:replace="~{fragments/utils :: style}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .category-card {
+            transition: box-shadow .2s, transform .2s;
+            border: 2px solid transparent;
+        }
+        .category-card:hover {
+            box-shadow: 0 8px 32px 0 rgba(255,193,7,0.16);
+            transform: scale(1.045) translateY(-4px);
+            border-color: #ffc107;
+            background: rgba(255, 255, 255, 0.01);
+        }
+        .category-icon {
+            font-size: 2.7rem;
+            color: #6c63ff;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <th:block th:replace="~{fragments/utils :: navbar}" />
+    </header>
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h1 class="fw-bold display-5 mb-2 text-primary">Categorie Ristoranti</h1>
+            <p class="text-secondary mb-0">Sfoglia tutte le categorie di locali disponibili</p>
+            <a th:href="@{/admin/categories/create}" class="btn btn-lg btn-warning fw-semibold shadow mt-2">
+                <i class="bi bi-plus-lg"></i> Nuova categoria
+            </a>
+        </div>
+
+        <!-- Selettore Lingua Bootstrap -->
+        <div class="mb-4 text-center">
+            <div class="btn-group" role="group" aria-label="Lingua">
+                <a th:href="@{${currentUrl}(lang='en')}"
+                   th:classappend="${lang} == 'en' ? 'active' : ''"
+                   class="btn btn-outline-primary">
+                  English
+                </a>
+                <a th:href="@{${currentUrl}(lang='it')}"
+                   th:classappend="${lang} == 'it' ? 'active' : ''"
+                   class="btn btn-outline-primary">
+                  Italiano
+                </a>
+            </div>
+        </div>
+
+        <!-- Lista Categorie -->
+        <div th:if="${categories.size() > 0}" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            <div th:each="categoria : ${categories}" class="col">
+                <div class="card category-card h-100 shadow text-center p-4">
+                    <i class="bi bi-tags category-icon"></i>
+                    <div class="card-body p-0">
+                        <h5 class="card-title fw-bold mb-3 text-uppercase"
+                            th:text="${lang} == 'it' ? ${categoria.itName} : ${categoria.name}">
+                            Nome Categoria
+                        </h5>
+                        <div class="d-flex justify-content-center gap-2">
+                            <a th:href="@{'/admin/categories/edit/' + ${categoria.id}}" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i> Modifica</a>
+                            <form th:action="@{/admin/categories/delete/{id}(id=${categoria.id})}" method="post" class="d-inline ms-auto">
+                                <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i> Elimina</button>
+                            </form>
+                            <form th:action="@{/admin/categories/isVisible/{id}(id=${categoria.id})}" method="post" class="d-inline">
+                                <button type="submit"
+                                        th:classappend="${categoria.isVisible} ? 'btn-success' : 'btn-secondary'"
+                                        class="btn btn-sm fw-semibold ms-2">
+                                    <i th:classappend="${categoria.isVisible} ? 'bi-eye' : 'bi-eye-slash'" class="bi"></i>
+                                    <span th:text="${categoria.isVisible} ? 'Visibile' : 'Nascosta'">Toggle</span>
+                                </button>
+                            </form>
+                        </div>
+                        <!-- Se vuoi aggiungere descrizione categoria: -->
+                        <!-- <p class="card-text small text-muted" th:text="${categoria.description}"></p> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div th:if="${categories.size() == 0}" class="alert alert-info mt-4 text-center" role="alert">
+            <i class="bi bi-info-circle"></i>
+            Nessuna categoria trovata.
+        </div>
+    </div>
+   <th:block th:replace="~{fragments/utils :: js}"/>
+</body>
+</html>

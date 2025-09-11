@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8" />
+    <title th:text="${edit} ? 'Modifica Categoria' : 'Crea Categoria'">Categoria</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <th:block th:replace="~{fragments/utils :: style}" />
+</head>
+<body>
+    <header>
+        <th:block th:replace="~{fragments/utils :: navbar}" />
+    </header>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-7 col-xl-6">
+                <div class="card shadow-lg border-primary">
+                    <div class="card-header bg-primary text-white fw-bold fs-5 d-flex align-items-center gap-2">
+                        <i class="bi bi-tags"></i>
+                        <span th:text="${edit} ? 'Modifica Categoria' : 'Crea Categoria'">Categoria</span>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="${edit} ? @{'/admin/categories/edit/' + ${category.id}} : @{'/admin/categories/create'}"
+                              th:object="${category}" method="post" autocomplete="off">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Nome categoria</label>
+                                <input type="text" id="name" th:field="*{name}" class="form-control" maxlength="32" autofocus>
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="itName" class="form-label">Nome italiano categoria</label>
+                                <input type="text" id="itName" th:field="*{itName}" class="form-control" maxlength="32" autofocus>
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('itName')}" th:errors="*{itName}"></div>
+                            </div>
+                            <div class="row mt-4 g-2">
+                                <div class="col-12 col-sm-auto">
+                                    <button type="submit" class="btn btn-success px-4 fw-semibold w-100">
+                                        <i class="bi bi-save"></i> Salva Dati
+                                    </button>
+                                </div>
+                                <div class="col-12 col-sm-auto">
+                                    <a th:href="@{/admin/categories}" class="btn btn-outline-secondary w-100">
+                                        <i class="bi bi-arrow-left"></i> Annulla
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <th:block th:replace="fragments/utils :: js"/>
+</body>
+</html>

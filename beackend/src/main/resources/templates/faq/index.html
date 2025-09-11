@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ | RestFinder</title>
+    <th:block th:replace="~{fragments/utils :: style}" />
+    <style>
+        .faq-section {
+            padding: 40px 0;
+        }
+        .faq-title {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .accordion-button:not(.collapsed) {
+            color: var(--bs-accordion-active-color);
+            background-color: var(--bs-accordion-active-bg);
+            box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .125);
+        }
+        .faq-actions {
+            margin-top: 15px;
+            text-align: right;
+        }
+        .faq-actions .btn {
+            margin-left: 10px;
+        }
+        .faq-actions form {
+            display: inline-block;
+            margin-left: 10px;
+        }
+        @media (max-width: 575.98px) {
+            .faq-title { font-size: 1.4rem; }
+            .accordion-button { font-size: 1.05rem; }
+            .faq-actions { text-align: left; }
+            .faq-actions .btn { margin-left: 0; margin-right: 10px; margin-bottom: 6px;}
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <th:block th:replace="~{fragments/utils :: navbar}" />
+    </header>
+    <main class="container faq-section">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-2">
+            <h1 class="faq-title mb-0 flex-grow-1 mb-4">Domande Frequenti (FAQ)</h1>
+            <a th:href="@{/admin/faqs/create}" class="btn btn-primary flex-shrink-0">Crea Nuova FAQ</a>
+        </div>
+
+        <div class="accordion" id="faqAccordion">
+            <div class="accordion-item" th:each="faq, iStat : ${faqs}">
+                <h2 class="accordion-header" th:id="${'heading' + iStat.index}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            th:data-bs-target="${'#collapse' + iStat.index}" aria-expanded="false"
+                            th:aria-controls="${'collapse' + iStat.index}">
+                        <span th:text="${faq.question}"></span>
+                    </button>
+                </h2>
+                <div th:id="${'collapse' + iStat.index}" class="accordion-collapse collapse"
+                     th:aria-labelledby="${'heading' + iStat.index}" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        <span th:text="${faq.response}"></span>
+                        <div class="faq-actions mt-3 d-flex flex-wrap gap-2">
+                            <a th:href="@{/admin/faqs/edit/{id}(id=${faq.id})}" class="btn btn-sm btn-outline-secondary">Modifica</a>
+                            <button type="button" class="btn btn-sm btn-outline-danger"
+                                    data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"
+                                    th:data-faq-id="${faq.id}" th:data-faq-question="${faq.question}">
+                                Elimina
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${#lists.isEmpty(faqs)}" class="text-center text-muted py-4">Nessuna FAQ presente.</div>
+        </div>
+    </main>
+    <!-- MODALE DELETE -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Conferma Eliminazione FAQ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Sei sicuro di voler eliminare la FAQ: "<strong id="faqQuestionPlaceholder"></strong>"?
+                    Questa operazione è irreversibile.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                    <form id="deleteFaqForm" method="post">
+                        <button type="submit" class="btn btn-danger">Conferma Eliminazione</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+   <th:block th:replace="fragments/utils :: js"/>
+    <script>
+        // Script per gestire la modale di eliminazione
+        const confirmDeleteModal = document.getElementById('confirmDeleteModal');
+        if (confirmDeleteModal) {
+            confirmDeleteModal.addEventListener('show.bs.modal', event => {
+                const button = event.relatedTarget;
+                const faqId = button.getAttribute('data-faq-id');
+                const faqQuestion = button.getAttribute('data-faq-question');
+                confirmDeleteModal.querySelector('#faqQuestionPlaceholder').textContent = faqQuestion;
+                confirmDeleteModal.querySelector('#deleteFaqForm').action = `/admin/faqs/delete/${faqId}`;
+            });
+        }
+    </script>
+</body>
+</html>

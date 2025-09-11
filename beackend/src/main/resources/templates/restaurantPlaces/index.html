@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Document</title>
+</head>
+<body>
+    <main>
+
+
+        <h1>Risultati Ricerca Ristoranti</h1>
+        <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+            <div th:each="ristorante : ${ristorantiGoogle}" style="border: 1px solid #ccc; border-radius: 8px; padding: 1rem; width: 300px;">
+                <h2 th:text="${ristorante.name}"></h2>
+                <p th:text="${ristorante.address}"></p>
+                <p th:if="${ristorante.rating != null}">Valutazione: <span th:text="${ristorante.rating}"></span></p>
+                <p th:if="${ristorante.city != null}">Città: <span th:text="${ristorante.city}"></span></p>
+                <p th:if="${ristorante.country != null}">Nazione: <span th:text="${ristorante.country}"></span></p>
+                <form th:action="@{/google/restaurants/salva}" method="post" style="margin-top: 1em;">
+                    <input type="hidden" naame="name" th:value="${ristorante.name}" />
+                    <input type="hidden" name="address" th:value="${ristorante.address}" />
+                    <input type="hidden" name="rating" th:value="${ristorante.rating}" />
+                    <input type="hidden" name="photoReference" th:value="${ristorante.photoReference}" />
+                    <input type="hidden" name="placeId" th:value="${ristorante.placeId}" />
+                    <input type="hidden" name="latitude" th:value="${ristorante.latitude}" />
+                    <input type="hidden" name="longitude" th:value="${ristorante.longitude}" />
+                    <input type="hidden" name="city" th:value="${ristorante.city}" />
+                    <input type="hidden" name="country" th:value="${ristorante.country}" />
+                    <input type="hidden" name="website" th:value="${ristorante.website}" />
+                    <input type="hidden" name="phoneNumber" th:value="${ristorante.phoneNumber}" />
+                    <input type="hidden" name="mapsUrl" th:value="${ristorante.mapsUrl}" />
+                    <input type="hidden" name="reviewCount" th:value="${ristorante.reviewCount}" />
+                    <input type="hidden" name="priceLevel" th:value="${ristorante.priceLevel}" />
+                    <input type="hidden" name="postalCode" th:value="${ristorante.postalCode}" />
+                    <input type="hidden" name="province" th:value="${ristorante.province}" />
+                    <button type="submit">Salva questo ristorante</button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <th:block th:replace="fragments/utils :: js"/>
+
+</body>
+</html>

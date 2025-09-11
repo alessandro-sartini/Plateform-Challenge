@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title th:text="${edit} ? 'Modifica Ristorante' : 'Crea Ristorante'">Ristorante</title>
+</head>
+<body>
+<h1 th:text="${edit} ? 'Modifica Ristorante' : 'Crea Ristorante'"></h1>
+
+<form th:action="@{${edit} ? '/restaurants/edit/' + ${restaurant.id} : '/restaurants/create'}" 
+      th:object="${restaurant}" 
+      method="post" 
+      enctype="multipart/form-data">
+
+    <!-- Altri campi di Restaurant, es. name, address, ecc -->
+    <div>
+        <label for="name">Nome:</label>
+        <input type="text" id="name" th:field="*{name}" />
+    </div>
+
+    <div>
+        <label for="address">indirizzo:</label>
+        <input type="text" id="address" th:field="*{address}" />
+    </div>
+
+    <div>
+        <label for="city">City:</label>
+        <input type="text" id="city" th:field="*{city}" />
+    </div>
+    <div>
+        <label for="province">province:</label>
+        <input type="text" id="province" th:field="*{province}" />
+    </div>
+
+    <div>
+        <label for="postalCode">CAP:</label>
+        <input type="text" id="postalCode" th:field="*{postalCode}" />
+    </div>
+    <div>
+        <label for="country">Stato:</label>
+        <input type="text" id="country" th:field="*{country}" />
+    </div>
+    <div>
+        <label for="menuLink">menu link:</label>
+        <input type="text" id="menuLink" th:field="*{menuLink}" />
+    </div>
+    <div>
+        <label for="phoneNumber">numero di telefono:</label>
+        <input type="text" id="phoneNumber" th:field="*{phoneNumber}" />
+    </div>
+    <div>
+        <label for="mapsUrl">url maps:</label>
+        <input type="text" id="mapsUrl" th:field="*{mapsUrl}" />
+    </div>
+    <div>
+        <label for="websiteUrl">url sitoWeb:</label>
+        <input type="text" id="websiteUrl" th:field="*{websiteUrl}" />
+    </div>
+    <div>
+        <label for="bookingLink">link di prenotazione:</label>
+        <input type="text" id="bookingLink" th:field="*{bookingLink}" />
+    </div>
+    <!-- <div>
+        <label for="mapsUrl">CAP:</label>
+        <input type="text" id="mapsUrl" th:field="*{mapsUrl}" />
+    </div> -->
+
+    <!-- Sezione immagini esistenti -->
+    <div>
+        <h3>Immagini Caricate</h3>
+        <div th:if="${#lists.isEmpty(imgs)}">
+            <p>Nessuna immagine disponibile.</p>
+        </div>
+        <div th:each="img : ${imgs}" style="display:inline-block; margin:10px; text-align:center;">
+            <img th:src="@{${img.path}}" alt="Foto Ristorante" width="120" height="90" style="border:1px solid #ccc;"/>
+            <br/>
+            <label>
+                <input type="checkbox" name="deleteImageIds" th:value="${img.id}" /> Elimina
+            </label>
+        </div>
+    </div>
+
+    <!-- Caricamento nuove immagini -->
+    <div>
+        <h3>Carica Nuove Immagini</h3>
+        <input type="file" name="newImages" multiple />
+    </div>
+
+    <div>
+        <button type="submit" th:text="${edit} ? 'Aggiorna' : 'Salva'"></button>
+        <a th:href="@{/restaurants}">Annulla</a>
+    </div>
+
+</form>
+</body>
+</html>

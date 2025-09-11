@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8" />
+    <title th:text="${edit} ? 'Modifica Ristorante' : 'Crea Ristorante'">Ristorante</title>
+    <th:block th:replace="~{fragments/utils :: style}" />
+    <style>
+        .card-highlight:hover { box-shadow: 0 8px 32px rgba(255,193,7,0.13)!important; border-color: #ffc107!important; }
+        .section-title { color: #185adb; }
+    </style>
+</head>
+<body>
+    <header>
+        <th:block th:replace="~{fragments/utils :: navbar}" />
+    </header>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-9">
+                <div class="card shadow-lg card-highlight border-primary">
+                    <div class="card-header bg-primary text-white fw-bold fs-5">
+                        <i class="bi bi-geo-alt-fill"></i>
+                        <span th:text="${edit} ? 'Modifica Ristorante' : 'Crea Ristorante'">Ristorante</span>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="${edit} ? @{/admin/restaurants/edit/{id}(id=*{id})} : @{/admin/restaurants/create}" th:object="${restaurant}" method="post">
+                            <div class="row g-3">
+                                <!-- Nome -->
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label">Nome</label>
+                                    <input type="text" id="name" th:field="*{name}" class="form-control" th:errorclass="is-invalid"/>
+                                    <div th:if="${#fields.hasErrors('name')}" class="invalid-feedback">
+                                        <ul><li th:each="error: ${#fields.errors('name')}" th:text="${error}"></li></ul>
+                                    </div>
+                                </div>
+                                <!-- Servizi -->
+                                <!-- <div class="col-md-6">
+                                    <label for="services" class="form-label">Servizi</label>
+                                    <input type="text" id="services" th:field="*{services}" class="form-control" th:errorclass="is-invalid"/>
+                                    <div th:if="${#fields.hasErrors('services')}" class="invalid-feedback">
+                                        <ul><li th:each="error: ${#fields.errors('services')}" th:text="${error}"></li></ul>
+                                    </div>
+                                </div> -->
+                                <!-- Prezzo medio -->
+                                <div class="col-md-4">
+                                    <label for="averagePrice" class="form-label">Prezzo medio (€)</label>
+                                    <input type="number" id="averagePrice" th:field="*{averagePrice}" class="form-control" min="0" step="0.01" th:classappend="${#fields.hasErrors('averagePrice')}? 'is-invalid'"/>
+                                    <div th:if="${#fields.hasErrors('averagePrice')}" class="invalid-feedback">
+                                        <ul><li th:each="error: ${#fields.errors('averagePrice')}" th:text="${error}"></li></ul>
+                                    </div>
+                                </div>
+                                <!-- Rating -->
+                                <div class="col-md-4">
+                                    <label for="rating" class="form-label">Rating</label>
+                                    <input type="number" id="rating" th:field="*{rating}" class="form-control" min="0" max="5" step="0.1" th:classappend="${#fields.hasErrors('rating')}? 'is-invalid'"/>
+                                    <div th:if="${#fields.hasErrors('rating')}" class="invalid-feedback">
+                                        <ul><li th:each="error: ${#fields.errors('rating')}" th:text="${error}"></li></ul>
+                                    </div>
+                                </div>
+                                <!-- Categoria Prezzo -->
+                                <div class="col-md-4">
+                                    <label for="priceCategory" class="form-label">Fascia Prezzo</label>
+                                    <select id="priceCategory" th:field="*{priceCategory}" class="form-select" th:classappend="${#fields.hasErrors('priceCategory')}? 'is-invalid'">
+                                        <option value="">Seleziona</option>
+                                        <option value="1">€</option>
+                                        <option value="2">€€</option>
+                                        <option value="3">€€€</option>
+                                        <option value="4">€€€€</option>
+                                    </select>
+                                    <div th:if="${#fields.hasErrors('priceCategory')}" class="invalid-feedback">
+                                        <ul><li th:each="error: ${#fields.errors('priceCategory')}" th:text="${error}"></li></ul>
+                                    </div>
+                                </div>
+                                <!-- Indirizzo -->
+                                <div class="col-md-6">
+                                    <label for="address" class="form-label">Indirizzo</label>
+                                    <input type="text" id="address" th:field="*{address}" class="form-control" th:classappend="${#fields.hasErrors('address')}? 'is-invalid'"/>
+                                    <div th:if="${#fields.hasErrors('address')}" class="invalid-feedback">
+                                        <ul><li th:each="error: ${#fields.errors('address')}" th:text="${error}"></li></ul>
+                                    </div>
+                                </div>
+                                <!-- CAP -->
+                                <div class="col-md-3">
+                                    <label for="postalCode" class="form-label">CAP</label>
+                                    <input type="text" id="postalCode" th:field="*{postalCode}" class="form-control" th:classappend="${#fields.hasErrors('postalCode')}? 'is-invalid'"/>
+                                    <div th:if="${#fields.hasErrors('postalCode')}" class="invalid-feedback">
+                                        <ul><li th:each="error: ${#fields.errors('postalCode')}" th:text="${error}"></li></ul>
+                                    </div>
+                                </div>
+                                <!-- Città -->
+                                <div class="col-md-3">
+                                    <label for="city" class="form-label">Città</label>
+                                    <input type="text" id="city" th:field="*{city}" class="form-control" th:classappend="${#fields.hasErrors('city')}? 'is-invalid'"/>
+                                    <div th:if="${#fields.hasErrors('city')}" class="invalid-feedback">
+                                        <ul><li th:each="error: ${#fields.errors('city')}" th:text="${error}"></li></ul>
+                                    </div>
+                                </div>
+                                <!-- Provincia -->
+                                <div class="col-md-4">
+                                    <label for="province" class="form-label">Provincia</label>
+                                    <input type="text" id="province" th:field="*{province}" class="form-control" th:classappend="${#fields.hasErrors('province')}? 'is-invalid'"/>
+                                    <div th:if="${#fields.hasErrors('province')}" class="invalid-feedback">
+                                        <ul><li th:each="error: ${#fields.errors('province')}" th:text="${error}"></li></ul>
+                                    </div>
+                                </div>
+                                <!-- Paese -->
+                                <div class="col-md-4">
+                                    <label for="country" class="form-label">Stato</label>
+                                    <input type="text" id="country" th:field="*{country}" class="form-control" th:classappend="${#fields.hasErrors('country')}? 'is-invalid'"/>
+                                    <div th:if="${#fields.hasErrors('country')}" class="invalid-feedback">
+                                        <ul><li th:each="error: ${#fields.errors('country')}" th:text="${error}"></li></ul>
+                                    </div>
+                                </div>
+                                <!-- Latitudine -->
+                                <div class="col-md-2">
+                                    <label for="latitude" class="form-label">Latitudine</label>
+                                    <input type="number" id="latitude" th:field="*{latitude}" class="form-control" step="0.000001" th:classappend="${#fields.hasErrors('latitude')}? 'is-invalid'"/>
+                                    <div th:if="${#fields.hasErrors('latitude')}" class="invalid-feedback">
+                                        <ul><li th:each="error: ${#fields.errors('latitude')}" th:text="${error}"></li></ul>
+                                    </div>
+                                </div>
+                                <!-- Longitudine -->
+                                <div class="col-md-2">
+                                    <label for="longitude" class="form-label">Longitudine</label>
+                                    <input type="number" id="longitude" th:field="*{longitude}" class="form-control" step="0.000001" th:classappend="${#fields.hasErrors('longitude')}? 'is-invalid'"/>
+                                    <div th:if="${#fields.hasErrors('longitude')}" class="invalid-feedback">
+                                        <ul><li th:each="error: ${#fields.errors('longitude')}" th:text="${error}"></li></ul>
+                                    </div>
+                                </div>
+                                <!-- PlaceId -->
+                                <div class="col-md-4">
+                                    <label for="placeId" class="form-label">Place ID</label>
+                                    <input type="text" id="placeId" th:field="*{placeId}" class="form-control" th:classappend="${#fields.hasErrors('placeId')}? 'is-invalid'"/>
+                                    <div th:if="${placeIdError}" class="alert alert-danger">
+                                        <span th:text="${placeIdError}"></span>
+                                    </div>
+                                </div>
+                                <!-- Immagine principale -->
+                                <div class="col-md-6">
+                                    <label for="primaryImage" class="form-label">URL Immagine Principale</label>
+                                    <input type="text" id="primaryImage" th:field="*{primaryImage}" class="form-control" th:classappend="${#fields.hasErrors('primaryImage')}? 'is-invalid'"/>
+                                    <div th:if="${#fields.hasErrors('primaryImage')}" class="invalid-feedback">
+                                        <ul><li th:each="error: ${#fields.errors('primaryImage')}" th:text="${error}"></li></ul>
+                                    </div>
+                                </div>
+                                <!-- Menu link -->
+                                <div class="col-md-6">
+                                    <label for="menuLink" class="form-label">Menu Link</label>
+                                    <input type="text" id="menuLink" th:field="*{menuLink}" class="form-control" th:classappend="${#fields.hasErrors('menuLink')}? 'is-invalid'"/>
+                                    <div th:if="${#fields.hasErrors('menuLink')}" class="invalid-feedback">
+                                        <ul><li th:each="error: ${#fields.errors('menuLink')}" th:text="${error}"></li></ul>
+                                    </div>
+                                </div>
+                                <!-- Telefono -->
+                                <div class="col-md-4">
+                                    <label for="phoneNumber" class="form-label">Telefono</label>
+                                    <input type="text" id="phoneNumber" th:field="*{phoneNumber}" class="form-control" th:classappend="${#fields.hasErrors('phoneNumber')}? 'is-invalid'"/>
+                                    <div th:if="${#fields.hasErrors('phoneNumber')}" class="invalid-feedback">
+                                        <ul><li th:each="error: ${#fields.errors('phoneNumber')}" th:text="${error}"></li></ul>
+                                    </div>
+                                </div>
+                                <!-- Google Rank -->
+                                <div class="col-md-4">
+                                    <label for="googleRank" class="form-label">Google Rank</label>
+                                    <input type="number" id="googleRank" th:field="*{googleRank}" class="form-control" min="0" th:classappend="${#fields.hasErrors('googleRank')}? 'is-invalid'"/>
+                                    <div th:if="${#fields.hasErrors('googleRank')}" class="invalid-feedback">
+                                        <ul><li th:each="error: ${#fields.errors('googleRank')}" th:text="${error}"></li></ul>
+                                    </div>
+                                </div>
+                                <!-- Review Count -->
+                                <div class="col-md-4">
+                                    <label for="reviewCount" class="form-label">Numero Recensioni</label>
+                                    <input type="number" id="reviewCount" th:field="*{reviewCount}" class="form-control" min="0" th:classappend="${#fields.hasErrors('reviewCount')}? 'is-invalid'"/>
+                                    <div th:if="${#fields.hasErrors('reviewCount')}" class="invalid-feedback">
+                                        <ul><li th:each="error: ${#fields.errors('reviewCount')}" th:text="${error}"></li></ul>
+                                    </div>
+                                </div>
+                                <!-- Maps URL -->
+                                <div class="col-md-6">
+                                    <label for="mapsUrl" class="form-label">URL Google Maps</label>
+                                    <input type="text" id="mapsUrl" th:field="*{mapsUrl}" class="form-control" th:classappend="${#fields.hasErrors('mapsUrl')}? 'is-invalid'"/>
+                                    <div th:if="${#fields.hasErrors('mapsUrl')}" class="invalid-feedback">
+                                        <ul><li th:each="error: ${#fields.errors('mapsUrl')}" th:text="${error}"></li></ul>
+                                    </div>
+                                </div>
+                                <!-- Sito web -->
+                                <div class="col-md-6">
+                                    <label for="websiteUrl" class="form-label">Sito Web</label>
+                                    <input type="text" id="websiteUrl" th:field="*{websiteUrl}" class="form-control" th:classappend="${#fields.hasErrors('websiteUrl')}? 'is-invalid'"/>
+                                    <div th:if="${#fields.hasErrors('websiteUrl')}" class="invalid-feedback">
+                                        <ul><li th:each="error: ${#fields.errors('websiteUrl')}" th:text="${error}"></li></ul>
+                                    </div>
+                                </div>
+                                <!-- Booking Link -->
+                                <div class="col-md-6">
+                                    <label for="bookingLink" class="form-label">Link Prenotazione</label>
+                                    <input type="text" id="bookingLink" th:field="*{bookingLink}" class="form-control" th:classappend="${#fields.hasErrors('bookingLink')}? 'is-invalid'"/>
+                                    <div th:if="${#fields.hasErrors('bookingLink')}" class="invalid-feedback">
+                                        <ul><li th:each="error: ${#fields.errors('bookingLink')}" th:text="${error}"></li></ul>
+                                    </div>
+                                </div>
+                                <!-- Platform Client ID -->
+                                <div class="col-md-6">
+                                    <label for="plateformClientId" class="form-label">ID Cliente Piattaforma</label>
+                                    <input type="number" id="plateformClientId" th:field="*{plateformClientId}" class="form-control" min="1" th:classappend="${#fields.hasErrors('plateformClientId')}? 'is-invalid'"/>
+                                    <div th:if="${#fields.hasErrors('plateformClientId')}" class="invalid-feedback">
+                                        <ul><li th:each="error: ${#fields.errors('plateformClientId')}" th:text="${error}"></li></ul>
+                                    </div>
+                                </div>
+                                <!-- Visibile -->
+                                <div class="col-md-2 d-flex align-items-end">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="isVisible" th:field="*{isVisible}">
+                                        <label class="form-check-label" for="isVisible">Visibile</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 d-flex align-items-end">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="isPartner" th:field="*{isPartner}">
+                                        <label class="form-check-label" for="isPartner">Partner</label>
+                                    </div>
+                                </div>
+                                <!-- Categorie -->
+                                <div class="col-12">
+                                    <label for="categorySelect" class="form-label">Categorie</label>
+                                    <div th:if="${categories} != null and !${categories.isEmpty()}" class="row row-cols-md-2 g-2 mx-auto"> 
+                                        <div class="col" th:each="category: ${categories}">
+                                            <div class="form-check">
+                                                <input type="checkbox" th:value="${category.id}" th:id="|category-${category.id}|" th:field="*{categories}" class="form-check-input">
+                                                <label th:for="|category-${category.id}|" th:text="${category.name}" class="form-check-label text-capitalize fw-bold"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('categories')}" class="invalid-feedback d-block">
+                                        <ul><li th:each="error: ${#fields.errors('categories')}" th:text="${error}"></li></ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 d-flex gap-2">
+                                <button type="submit" class="btn btn-success px-4 fw-semibold"><i class="bi bi-save"></i> Salva Dati</button>
+                                <a th:href="@{/admin/restaurants}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Annulla</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- FORM GESTIONE IMMAGINI (aggiungilo qui sotto come già nelle tue versioni se richiesto) -->
+
+                  <!-- === FORM GESTIONE IMMAGINI === -->
+                <div class="card shadow-sm p-4">
+                    <h3 class="mb-3">Immagini Caricate</h3>
+                    <form th:action="@{'/admin/restaurants/edit/' + ${restaurant.id} + '/images'}"
+                        method="post"
+                        enctype="multipart/form-data">
+                        <div class="row row-cols-2 row-cols-md-4 g-3 mb-4">
+                            <div th:if="${#lists.isEmpty(imgs)}" class="col-12">
+                                <div class="alert alert-info">Nessuna immagine disponibile.</div>
+                            </div>
+                            <div th:each="img : ${imgs}" class="col text-center">
+                                <div class="border rounded p-2">
+                                    <img th:src="@{${img.path}}" alt="Foto Ristorante"
+                                        class="img-fluid mb-2" style="height:110px; object-fit:cover;"/>
+                                    <div>
+                                        <input type="checkbox" class="form-check-input" name="deleteImageIds" th:value="${img.id}" id="imgdel__${img.id}"/>
+                                        <label th:for="'imgdel__' + ${img.id}" class="form-check-label small text-danger">Elimina</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newImages" class="form-label fw-semibold">Carica nuove immagini</label>
+                            <input type="file" name="newImages" id="newImages" class="form-control" multiple accept="image/*"/>
+                            <div class="form-text">Puoi selezionare più immagini.</div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary px-4">Salva Modifiche Immagini</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+   <th:block th:replace="fragments/utils :: js"/>
+</body>
+</html>

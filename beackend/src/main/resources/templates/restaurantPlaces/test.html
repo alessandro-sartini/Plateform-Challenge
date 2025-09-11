@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Risultati Google Places</title>
+</head>
+<body>
+  <h1>Risultati Ricerca</h1>
+  <div th:if="${ristorantiGoogle == null or #lists.isEmpty(ristorantiGoogle)}">
+    <p>Nessun risultato</p>
+  </div>
+  <div th:each="ristorante : ${ristorantiGoogle}">
+    <h2 th:text="${ristorante.name}">Nome</h2>
+    <p><strong>Place ID:</strong> <span th:text="${ristorante.placeId}"/></p>
+    <p><strong>Indirizzo:</strong> <span th:text="${ristorante.address}"/></p>
+    <p><strong>Rating:</strong> <span th:text="${ristorante.rating}"/></p>
+    <!-- Bottone Salva -->
+    <form th:action="@{'/restaurants/place/' + ${ristorante.placeId} + '/save'}" method="post">
+      <button type="submit">Salva</button>
+    </form>
+    <hr/>
+  </div>
+</body>
+</html>

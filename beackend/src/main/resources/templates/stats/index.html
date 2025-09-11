@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="it" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Statistiche API | RestFinder</title>
+  <th:block th:replace="~{fragments/utils :: style}" />
+</head>
+<body>
+    <header>
+        <th:block th:replace="~{fragments/utils :: navbar}" />
+    </header>
+  <div class="container my-5">
+    <div class="d-flex align-items-center gap-2 mb-4">
+      <i class="bi bi-graph-up fs-2 text-warning"></i>
+      <h1 class="mb-0 fw-bold display-6">Statistiche chiamate API</h1>
+    </div>
+    <div class="card shadow border-primary">
+      <div class="card-body">
+        <table class="table table-striped table-bordered align-middle text-center mb-0">
+          <thead class="table-primary">
+            <tr>
+              <th>Endpoint</th>
+              <th>Data</th>
+              <th>Numero chiamate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="stat : ${stats}">
+              <td th:text="${stat.endpoint}"></td>
+              <td th:text="${stat.date}"></td>
+              <td>
+                <span class="badge bg-success fs-6" th:text="${stat.count}"></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div th:if="${#lists.isEmpty(stats)}" class="alert alert-info mt-4 text-center">Nessuna statistica trovata.</div>
+      </div>
+    </div>
+  </div>
+ <th:block th:replace="fragments/utils :: js"/>
+</body>
+</html>

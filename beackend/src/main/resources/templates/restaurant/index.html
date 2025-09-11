@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="it" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ristoranti | RestFinder</title>
+  <th:block th:replace="~{fragments/utils :: style}" />
+  <style>
+    .restaurant-card:hover {
+      transform: scale(1.025) translateY(-4px);
+      box-shadow: 0 8px 32px 0 rgba(0,0,0,0.18)!important;
+      border-color: #f9d923!important;
+      background: rgba(248, 242, 171, 0.04);
+    }
+    .img-16by9 {
+      aspect-ratio: 16 / 9;
+      width: 100%;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <th:block th:replace="~{fragments/utils :: navbar}" />
+  </header>
+  <div class="container py-4">
+
+    <!-- HEADER + CREA -->
+    <div class="row align-items-center mb-4">
+      <div class="col">
+        <h1 class="fw-bold display-6 mb-0">Ristoranti</h1>
+      </div>
+      <div class="col-auto">
+        <a th:href="@{/admin/restaurants/create}" class="btn btn-warning fw-semibold px-4 w-100 w-md-auto">
+          <i class="bi bi-plus-lg"></i> Crea Nuovo
+        </a>
+      </div>
+    </div>
+
+    <!-- FILTRI -->
+    <form th:action="@{/admin/restaurants}" method="get" class="row g-2 mb-4">
+      <div class="col-12 col-sm-6 col-md-3">
+        <input type="text" name="query" th:value="${query}" placeholder="Nome..." class="form-control">
+      </div>
+      <div class="col-12 col-sm-6 col-md-3">
+        <input type="text" name="city" th:value="${city}" placeholder="Città..." class="form-control">
+      </div>
+      <div class="col-6 col-md-2">
+        <select name="categoryId" class="form-select">
+          <option value="" th:selected="${categoryId == null}">Tutte le categorie</option>
+          <option th:each="cat : ${categories}" th:value="${cat.id}"
+                  th:selected="${categoryId != null} ? ${cat.id} == ${categoryId} : false"
+                  th:text="${cat.name}"></option>
+        </select>
+      </div>
+      <div class="col-6 col-md-2">
+        <select name="priceCategory" class="form-select">
+          <option value="" th:selected="${priceCategory == null}">Prezzo</option>
+          <option value="1" th:selected="${priceCategory == 1}">€</option>
+          <option value="2" th:selected="${priceCategory == 2}">€€</option>
+          <option value="3" th:selected="${priceCategory == 3}">€€€</option>
+          <option value="4" th:selected="${priceCategory == 4}">€€€€</option>
+        </select>
+      </div>
+      <div class="col-6 col-md-1">
+        <input type="number" name="minRating" step="0.5" min="0" max="5" th:value="${minRating}" placeholder="★ min" class="form-control">
+      </div>
+      <div class="col-6 col-md-1">
+        <select name="isVisible" class="form-select">
+          <option value="" th:selected="${isVisible == null}">Tutti</option>
+          <option value="true" th:selected="${isVisible == true}">Visibili</option>
+          <option value="false" th:selected="${isVisible == false}">Nascosti</option>
+        </select>
+      </div>
+      <div class="col-12 col-md-auto">
+        <button type="submit" class="btn btn-primary w-100"><i class="bi bi-search"></i> Cerca</button>
+      </div>
+    </form>
+
+    <!-- RISULTATI -->
+    <div th:if="${restaurantPage.totalElements > 0}" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+      <div th:each="ristorante : ${restaurantPage.content}" class="col d-flex">
+        <div class="card restaurant-card shadow border-0 h-100 flex-fill">
+          <a th:href="@{/admin/restaurants/slug/{slug}(slug=${ristorante.slug})}">
+            <img th:src="@{${ristorante.primaryImage}}" th:alt="${ristorante.name}" class="img-16by9 rounded-top">
+          </a>
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title mb-2 fw-semibold" th:text="${ristorante.name}"></h5>
+            <div class="mb-2">
+              <span th:if="${ristorante.city != null}" class="badge bg-primary-subtle text-primary me-1">
+                <i class="bi bi-geo"></i> <span th:text="${ristorante.city}"></span>
+              </span>
+              <span th:if="${ristorante.priceCategory != null}" class="badge bg-warning-subtle text-light me-1">
+                <span th:switch="${ristorante.priceCategory}">
+                  <span th:case="1">€</span>
+                  <span th:case="2">€€</span>
+                  <span th:case="3">€€€</span>
+                  <span th:case="4">€€€€</span>
+                  <span th:case="*">N/D</span>
+                </span>
+              </span>
+              <span th:if="${ristorante.rating != null}" class="badge bg-success-subtle text-success">
+                <i class="bi bi-star-fill"></i>
+                <span th:text="${ristorante.rating}"></span>
+              </span>
+            </div>
+            <div class="mt-auto"></div>
+          </div>
+          <div class="card-footer border-0 bg-transparent d-grid gap-2">
+            <form th:action="${ristorante.isVisible} ? @{/admin/restaurants/pause/{id}(id=${ristorante.id})} : @{/admin/restaurants/restart/{id}(id=${ristorante.id})}" method="post">
+              <button type="submit" class="btn btn-sm w-100 mb-1"
+                      th:classappend="${ristorante.isVisible} ? 'btn-warning' : 'btn-success'"
+                      th:text="${ristorante.isVisible} ? 'Nascondi' : 'Mostra'">Toggle</button>
+            </form>
+            <a th:href="@{/admin/restaurants/edit/{id}(id=${ristorante.id})}" class="btn btn-sm btn-outline-primary w-100 mb-1">
+              <i class="bi bi-pencil"></i> Modifica
+            </a>
+            <form th:action="@{/admin/restaurants/delete/{id}(id=${ristorante.id})}" method="post">
+              <button type="submit" class="btn btn-sm btn-outline-danger w-100"><i class="bi bi-trash"></i> Elimina</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div th:if="${restaurantPage.totalElements == 0}" class="alert alert-info mt-4" role="alert">
+      Nessun ristorante trovato.
+    </div>
+
+    <!-- PAGINAZIONE -->
+    <div class="mt-4 d-flex justify-content-center flex-wrap gap-2">
+      <a th:if="${currentPage > 0}"
+         th:href="@{/admin/restaurants(page=${currentPage-1},size=${size},query=${query},city=${city},categoryId=${categoryId},priceCategory=${priceCategory},isVisible=${isVisible},minRating=${minRating})}"
+         class="btn btn-outline-primary btn-sm"><i class="bi bi-chevron-left"></i> Precedente</a>
+      <span th:text="'Pagina ' + (${currentPage+1}) + ' di ' + ${totalPages}"></span>
+      <a th:if="${currentPage < totalPages-1}"
+         th:href="@{/admin/restaurants(page=${currentPage+1},size=${size},query=${query},city=${city},categoryId=${categoryId},priceCategory=${priceCategory},isVisible=${isVisible},minRating=${minRating})}"
+         class="btn btn-outline-primary btn-sm">Successiva <i class="bi bi-chevron-right"></i></a>
+    </div>
+    <div class="text-center mt-2">
+      <span th:text="'Totale ristoranti: ' + ${restaurantPage.totalElements}"></span>
+    </div>
+  </div>
+ <th:block th:replace="fragments/utils :: js"/>
+</body>
+</html>

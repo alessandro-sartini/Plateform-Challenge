@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="it" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Registrazione Admin | RestFinder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <th:block th:replace="~{fragments/utils :: style}" />
+  <style>
+    @media (max-width: 576px) {
+      .card-register {
+        min-width: 98vw !important;
+        max-width: 99vw !important;
+        border-radius: 0 !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-dark">
+  <header>
+    <th:block th:replace="~{fragments/utils :: navbar}" />
+  </header>
+  <div class="d-flex justify-content-center align-items-center" style="min-height:90vh;">
+    <div class="card p-4 shadow-lg card-register" style="min-width:350px;max-width:370px;">
+      <div class="text-center mb-4">
+        <i class="bi bi-person-plus-fill fs-1 text-success mb-2"></i>
+        <h4 class="fw-bold">Registra nuovo admin</h4>
+      </div>
+      <form th:action="@{/admin/register}" th:object="${user}" method="post">
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <input th:field="*{username}" class="form-control" type="text" required>
+          <div class="text-danger small" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input th:field="*{password}" class="form-control" type="password" required>
+          <div class="text-danger small" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+        </div>
+        <div th:if="${userExists}" class="alert alert-danger text-center p-2">Username già esistente!</div>
+        <div th:if="${registerSuccess}" class="alert alert-success text-center p-2">Nuovo admin creato con successo!</div>
+        <button class="btn btn-success w-100 fw-semibold" type="submit">Registra</button>
+      </form>
+      
+    </div>
+  </div>
+ <th:block th:replace="fragments/utils :: js"/>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RestFinder</title>
+    <!-- STYLE FRAGMENT -->
+    <th:block th:fragment="style">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    </th:block>
+</head>
+<body>
+<!-- NAVBAR FRAGMENT -->
+<th:block th:fragment="navbar">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm sticky-top py-2">
+        <div class="container-fluid px-2 px-lg-4">
+            <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" th:href="@{/}">
+                <i class="bi bi-geo-alt-fill fs-4 text-warning"></i>
+                <span class="d-none d-md-inline">RestFinder</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+                    aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse mt-2 mt-lg-0" id="mainNavbar">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-lg-1">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/google/restaurants}">
+                            <i class="bi bi-cloud-download"></i>
+                            <span class="d-none d-lg-inline">Import</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/restaurants}">
+                            <i class="bi bi-shop"></i>
+                            <span class="d-none d-lg-inline">Ristoranti</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/categories}">
+                            <i class="bi bi-tags"></i>
+                            <span class="d-none d-lg-inline">Categorie</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/stats}">
+                            <i class="bi bi-graph-up"></i>
+                            <span class="d-none d-lg-inline">Statistiche</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/restaurants/most-viewed}">
+                            <i class="bi bi-graph-up"></i>
+                            <span class="d-none d-lg-inline">Più Visitati</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           th:href="@{/admin/faqs}"
+                           th:classappend="${currentPage == 'faqs'} ? 'active'"
+                           th:aria-current="${currentPage == 'faqs'} ? 'page' : null">
+                            <i class="bi bi-patch-question-fill"></i>
+                            <span class="d-none d-lg-inline">FAQ</span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto align-items-center gap-2">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/register}">
+                            <i class="bi bi-person-plus-fill"></i>
+                            <span class="d-none d-lg-inline">Nuovo Admin</span>
+                        </a>
+                    </li>
+                    <li class="nav-item d-none d-lg-block">
+                        <span class="text-white-50 small">
+                            <i class="bi bi-person-circle"></i>
+                            <span sec:authentication="name">Utente</span>
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-sm btn-outline-light ms-lg-2" th:href="@{/logout}">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span class="d-none d-lg-inline">Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</th:block>
+<!-- LOADER FRAGMENT -->
+<div th:fragment="loader" id="global-loader"
+     class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-white bg-opacity-75"
+     style="z-index: 2000; display: none;">
+    <div class="text-center">
+        <div class="spinner-border text-primary mb-3" style="width: 4rem; height: 4rem;" role="status">
+            <span class="visually-hidden">Caricamento...</span>
+        </div>
+        <div class="fw-bold">Caricamento...</div>
+    </div>
+</div>
+<!-- JS FRAGMENT -->
+<th:block th:fragment="js">
+   <th:block th:replace="fragments/utils :: js"/>
+</th:block>
+</body>
+</html>
