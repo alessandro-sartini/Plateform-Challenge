@@ -1,10 +1,23 @@
-# RestFinder 🍽️
+# 🍽️ RestFinder
 
-## Overview
+<div align="center">
 
-RestFinder is a comprehensive restaurant discovery and management platform developed collaboratively by [Alessandro Sartini](https://github.com/alessandro-sartini) and [Karlo Kasi](https://github.com/karlo-kasi). The platform combines modern web technologies with powerful backend services to provide users with an intuitive way to discover, explore, and interact with restaurants.
+![RestFinder Logo](frontend/public/images/logo.png)
 
-## 🚀 Features
+_Discover Your Next Favorite Restaurant_
+
+[![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://www.oracle.com/java/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.1-green.svg)](https://spring.io/projects/spring-boot)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0-blue.svg)](https://www.mysql.com/)
+[![Google Maps](https://img.shields.io/badge/Google%20Maps-API-yellow.svg)](https://developers.google.com/maps)
+
+</div>
+
+## 📖 Overview
+
+RestFinder è una piattaforma innovativa per la scoperta e la gestione di ristoranti, sviluppata da [Alessandro Sartini](https://github.com/alessandro-sartini) e [Karlo Kasi](https://github.com/karlo-kasi). Il progetto combina le potenti funzionalità di Spring Boot con un'interfaccia utente intuitiva per offrire un'esperienza completa di ricerca ristoranti.
+
+## 🌟 Caratteristiche Principali
 
 ### For Users
 
@@ -119,34 +132,9 @@ RestFinder/
 
 ### Prerequisites
 
-- Node.js (v16+)
 - Java JDK 17+
 - MySQL 8+
 - Maven 3.8+
-
-### Installation Steps
-
-1. Clone the repository
-
-```bash
-git clone https://github.com/[username]/RestFinder.git
-```
-
-2. Frontend Setup
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-3. Backend Setup
-
-```bash
-cd backend
-mvn clean install
-mvn spring-boot:run
-```
 
 ## 🤝 Contribution
 
