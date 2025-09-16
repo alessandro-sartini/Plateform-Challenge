@@ -143,12 +143,3 @@ This project was developed as a team effort by:
 - [Alessandro Sartini](https://github.com/alessandro-sartini) - Backend Development, API Integration
 - [Karlo Kasi](https://github.com/karlo-kasi) - Frontend Development, UI/UX Design
 
-## 📝 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 🌟 Acknowledgments
-
-- Thanks to Generation Italy for the project opportunity
-- Special thanks to our mentors and advisors
-- Google Maps and Places API for location services
